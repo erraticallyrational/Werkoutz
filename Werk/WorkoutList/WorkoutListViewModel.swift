@@ -14,7 +14,7 @@ class WorkoutListViewModel: ObservableObject {
     
     init(service: DataStorageServiceIdentity = DataStorageService()) {
         self.service = service
-        service.getWorkoutBlueprintsRemote()
+        service.getWorkoutBlueprints()
         service.observeWorkoutBlueprints().assign(to: &$workOuts)
         
     }

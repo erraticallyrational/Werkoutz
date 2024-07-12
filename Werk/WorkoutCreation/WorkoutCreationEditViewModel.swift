@@ -52,9 +52,7 @@ class WorkoutCreationEditViewModel:Identifiable, ObservableObject {
     
     func didSelectSave() {//make if else statement for filter if true update workout if false save workout
         //expect some work to save this information
-        guard let user = service.getLocalCurrentUser() else { return }
-        workout.userId = user.id
-        service.saveWorkoutBlueprintRemote(workoutBlueprint: workout)
+        service.saveWorkoutBlueprint(workoutBlueprint: workout)
         onWorkoutUpdate?(workout)
     }
         

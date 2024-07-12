@@ -14,14 +14,6 @@ struct MainView: View {
                 WorkoutHistoryView()
                     .padding(.bottom, 16) // Add some spacing between the views
                 WorkOutListView(viewModel: WorkoutListViewModel())
-            }.toolbar{
-                ToolbarItem {
-                    NavigationLink {
-                        ProfileView()
-                    } label: {
-                        Image(systemName: "person.circle")
-                    }
-                }
             }
         }
     }

@@ -14,7 +14,7 @@ final class WorkoutHistoryViewModel: ObservableObject {
    
     init(service: DataStorageServiceIdentity = DataStorageService()) {
         self.service = service
-        service.getRecordedWorkoutsRemote()
+        service.getRecordedWorkouts()
         service.observeRecordedWorkouts().assign(to: &$allWorkouts) 
         
                 $weekSelection.map{ [weak self] selectedWeek -> [Bar] in

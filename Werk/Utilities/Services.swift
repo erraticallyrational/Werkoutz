@@ -14,14 +14,15 @@ protocol DataStorageServiceIdentity {
     func saveWorkoutBlueprint(workoutBlueprint: WorkoutBlueprint)
     func saveWorkoutBlueprintRemote(workoutBlueprint: WorkoutBlueprint)
     func getWorkoutBlueprints() -> [WorkoutBlueprint]
-    func getWorkoutBlueprintsRemote()
+//    func getWorkoutBlueprintsRemote()
     func saveRecordedWorkout(recordedWorkout: RecordedWorkout)
     func saveRecordedWorkoutRemote(recordedWorkout: RecordedWorkout)
-    func getRecordedWorkoutsRemote()
+    func getRecordedWorkouts() -> [RecordedWorkout]
+//    func getRecordedWorkoutsRemote()
     func observeWorkoutBlueprints() -> AnyPublisher<[WorkoutBlueprint], Never>
     func observeRecordedWorkouts() -> AnyPublisher<[RecordedWorkout], Never>
     func deleteWorkoutBlueprint(at workoutBlueprint: WorkoutBlueprint)
-    func getLocalCurrentUser() -> UserModel?
+//    func getLocalCurrentUser() -> UserModel?
     func fetchUpdatedWorkout(id: String) -> WorkoutBlueprint?
     
 }
@@ -96,38 +97,38 @@ class DataStorageService: DataStorageServiceIdentity {
     
     
     
-    func getWorkoutBlueprintsRemote(){ //FIREBASE
-        guard let user = getLocalCurrentUser() else { return }
-        let dataStore = Firestore.firestore().collection(DataKey.workoutBlueprint.rawValue).whereField("userId", isEqualTo: user.id)
-        dataStore.getDocuments { queryCall, error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                if let queryCall = queryCall {
-                    let remoteWorkoutBlueprints = queryCall.documents.compactMap { w -> WorkoutBlueprint? in
-                        guard let userId = w["userId"] as? String else { return nil}
-                        let id = w["id"] as? String ?? ""
-                        let name = w["name"] as?  String ?? ""
-                        let warmup = Self.convertDictionaryToWorkPhase(dictionary: (w["warmup"] as? [String: Any] ?? [:]))
-                        let intervals = Self.convertDictionaryToIntervaCollectionl(dictionary:(w["intervals"] as? [String: Any]) ?? [:])
-                        let cooldown = Self.convertDictionaryToWorkPhase(dictionary: w["cooldown"] as? [String: Any] ?? [:])
-                        print("returned workout")
-                        return WorkoutBlueprint(userId: userId, id: id , name: name, warmup: warmup, intervals: intervals, cooldown: cooldown)
-                    }
-                    let blueprintData: [Data] = remoteWorkoutBlueprints.map { blueprint -> Data? in
-                        do {
-                            return try JSONEncoder().encode(blueprint)
-                        } catch {
-                            return nil
-                        }
-                    }.compactMap { $0}
-                    
-                    
-                    UserDefaults.standard.workoutBlueprints = blueprintData
-                }
-            }
-        }
-    }
+//    func getWorkoutBlueprintsRemote(){ //FIREBASE
+////        guard let user = getLocalCurrentUser() else { return }
+//        let dataStore = Firestore.firestore().collection(DataKey.workoutBlueprint.rawValue).whereField("userId", isEqualTo: user.id)
+//        dataStore.getDocuments { queryCall, error in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                if let queryCall = queryCall {
+//                    let remoteWorkoutBlueprints = queryCall.documents.compactMap { w -> WorkoutBlueprint? in
+//                        guard let userId = w["userId"] as? String else { return nil}
+//                        let id = w["id"] as? String ?? ""
+//                        let name = w["name"] as?  String ?? ""
+//                        let warmup = Self.convertDictionaryToWorkPhase(dictionary: (w["warmup"] as? [String: Any] ?? [:]))
+//                        let intervals = Self.convertDictionaryToIntervaCollectionl(dictionary:(w["intervals"] as? [String: Any]) ?? [:])
+//                        let cooldown = Self.convertDictionaryToWorkPhase(dictionary: w["cooldown"] as? [String: Any] ?? [:])
+//                        print("returned workout")
+//                        return WorkoutBlueprint(userId: userId, id: id , name: name, warmup: warmup, intervals: intervals, cooldown: cooldown)
+//                    }
+//                    let blueprintData: [Data] = remoteWorkoutBlueprints.map { blueprint -> Data? in
+//                        do {
+//                            return try JSONEncoder().encode(blueprint)
+//                        } catch {
+//                            return nil
+//                        }
+//                    }.compactMap { $0}
+//                    
+//                    
+//                    UserDefaults.standard.workoutBlueprints = blueprintData
+//                }
+//            }
+//        }
+//    }
     
     func saveRecordedWorkout(recordedWorkout: RecordedWorkout) { //LOCAL STORAGE
         do {
@@ -166,7 +167,6 @@ class DataStorageService: DataStorageServiceIdentity {
             } else {
                 print("Did save recorded workout")
                 print("should save/update locally")
-                print("USERID: \(copy.userId)")
                 print("TODAYS DATE: \(copy.date)")
                 print("WORKOUT NAME: \(copy.name)")
                 print("TOTAL DURATION: \(copy.duration)")
@@ -174,8 +174,6 @@ class DataStorageService: DataStorageServiceIdentity {
             }
         }
     }
-    
-    
     
     func getRecordedWorkouts() -> [RecordedWorkout] { //LOCAL STORAGE
         UserDefaults.standard.recordedWorkouts.map {
@@ -190,30 +188,30 @@ class DataStorageService: DataStorageServiceIdentity {
     }
     
     
-    func getRecordedWorkoutsRemote() {
-        guard let user = getLocalCurrentUser() else { return }
-        let dataStore = Firestore.firestore().collection("recordedWorkouts").whereField("userId", isEqualTo: user.id)
-        dataStore.getDocuments { queryCall, error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                if let queryCall = queryCall {
-                    let remoteWorkoutData:[Data] = queryCall.documents.compactMap { document in
-                        Self.convertDictionaryToRecordedWorkout(dictionary: document.data())  //Should this be 'convertRecordedWorkoutToDictionary" ?
-                    }.map { recordedWorkout in
-                        do {
-                            return try JSONEncoder().encode(recordedWorkout)
-                        } catch {
-                            return nil
-                        }
-                    }.compactMap{
-                        $0
-                    }
-                UserDefaults.standard.recordedWorkouts = remoteWorkoutData
-                }
-            }
-        }
-    }
+//    func getRecordedWorkoutsRemote() {
+//        guard let user = getLocalCurrentUser() else { return }
+//        let dataStore = Firestore.firestore().collection("recordedWorkouts").whereField("userId", isEqualTo: user.id)
+//        dataStore.getDocuments { queryCall, error in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                if let queryCall = queryCall {
+//                    let remoteWorkoutData:[Data] = queryCall.documents.compactMap { document in
+//                        Self.convertDictionaryToRecordedWorkout(dictionary: document.data())  //Should this be 'convertRecordedWorkoutToDictionary" ?
+//                    }.map { recordedWorkout in
+//                        do {
+//                            return try JSONEncoder().encode(recordedWorkout)
+//                        } catch {
+//                            return nil
+//                        }
+//                    }.compactMap{
+//                        $0
+//                    }
+//                UserDefaults.standard.recordedWorkouts = remoteWorkoutData
+//                }
+//            }
+//        }
+//    }
     
 
     
@@ -279,10 +277,10 @@ class DataStorageService: DataStorageServiceIdentity {
         UserDefaults.standard.workoutBlueprints
     }
     
-    func getLocalCurrentUser() -> UserModel?{
-        let data = UserDefaults.standard.userData
-        return try? JSONDecoder().decode(UserModel.self, from: data)
-    }
+//    func getLocalCurrentUser() -> UserModel?{
+//        let data = UserDefaults.standard.userData
+//        return try? JSONDecoder().decode(UserModel.self, from: data)
+//    }
     
     
     func fetchUpdatedWorkout(id: String) -> WorkoutBlueprint? {
@@ -310,19 +308,19 @@ extension Array where Element: Equatable {
 
 extension UserDefaults {
     
-    @objc var userData: Data {
-        get {
-            if let data = UserDefaults.standard.object(forKey: DataKey.userId.rawValue) as? Data {
-                return data
-            } else {
-                return Data()
-            }
-        }
-        
-        set {
-            UserDefaults.standard.set(newValue, forKey: DataKey.userId.rawValue)
-        }
-    }
+//    @objc var userData: Data {
+//        get {
+//            if let data = UserDefaults.standard.object(forKey: DataKey.userId.rawValue) as? Data {
+//                return data
+//            } else {
+//                return Data()
+//            }
+//        }
+//        
+//        set {
+//            UserDefaults.standard.set(newValue, forKey: DataKey.userId.rawValue)
+//        }
+//    }
     
     @objc var workoutBlueprints: [Data] {
         get {
@@ -435,7 +433,6 @@ extension DataStorageService {
     
     static func convertRecordedWorkoutToDictionary(recordedWorkout: RecordedWorkout)-> [String: Any] { //converts recordedWorkout into dictionary to save data to firebase
         [
-            "userId": recordedWorkout.userId,
             "workoutId": recordedWorkout.id,
             "name": recordedWorkout.name,
             "duration": recordedWorkout.duration,
@@ -449,8 +446,8 @@ extension DataStorageService {
               let name = dictionary["name"] as? String,
               let duration = dictionary["duration"] as? Int,
               let timestamp = dictionary["date"] as? Timestamp else {
-            return RecordedWorkout(userId: "",id:"" ,name: "", duration: 0, date: Date())
+            return RecordedWorkout(id:"" ,name: "", duration: 0, date: Date())
         }
-        return RecordedWorkout(userId: userId,id: id, name: name, duration: Double(duration), date: Date(timeIntervalSince1970: Double(timestamp.seconds) ) )
+        return RecordedWorkout(id: id, name: name, duration: Double(duration), date: Date(timeIntervalSince1970: Double(timestamp.seconds) ) )
     }
 }

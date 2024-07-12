@@ -1,28 +1,28 @@
+////
+////  GroupedViews.swift
+////  Werk
+////
+////  Created by Shaquil Campbell on 9/22/23.
+////
 //
-//  GroupedViews.swift
-//  Werk
+//import SwiftUI
 //
-//  Created by Shaquil Campbell on 9/22/23.
+//struct GroupedViews: View {
+//    @EnvironmentObject var authenticationViewModel: AuthenticationViewModel
+//    
+//    var body: some View {
+//        Group {
+//            if authenticationViewModel.userSession != nil {
+//                MainView()
+//            } else {
+//                LogInView().environmentObject(authenticationViewModel)
+//            }
+//        }
+//    }
+//}
 //
-
-import SwiftUI
-
-struct GroupedViews: View {
-    @EnvironmentObject var authenticationViewModel: AuthenticationViewModel
-    
-    var body: some View {
-        Group {
-            if authenticationViewModel.userSession != nil {
-                MainView()
-            } else {
-                LogInView().environmentObject(authenticationViewModel)
-            }
-        }
-    }
-}
-
-struct GroupedViews_Previews: PreviewProvider {
-    static var previews: some View {
-        GroupedViews().environmentObject(AuthenticationViewModel())
-    }
-}
+//struct GroupedViews_Previews: PreviewProvider {
+//    static var previews: some View {
+//        GroupedViews().environmentObject(AuthenticationViewModel())
+//    }
+//}
