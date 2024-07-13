@@ -12,8 +12,6 @@
 		7243762F2A6487AC00CE606C /* IntervalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7243762E2A6487AC00CE606C /* IntervalPicker.swift */; };
 		724376322A648CB500CE606C /* IntervalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724376312A648CB500CE606C /* IntervalView.swift */; };
 		724AED6C29F2038C004B6E3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 724AED6B29F2038C004B6E3D /* GoogleService-Info.plist */; };
-		724AED6F29F2042B004B6E3D /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 724AED6E29F2042B004B6E3D /* FirebaseAuth */; };
-		724AED7129F2042B004B6E3D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 724AED7029F2042B004B6E3D /* FirebaseFirestore */; };
 		724AED7329F204D1004B6E3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724AED7229F204D1004B6E3D /* AppDelegate.swift */; };
 		724AED7E29F4369A004B6E3D /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724AED7D29F4369A004B6E3D /* MainView.swift */; };
 		726483312954140B0045A951 /* IntensityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726483302954140B0045A951 /* IntensityView.swift */; };
@@ -43,7 +41,6 @@
 		72F2A8E52ABD50BF002FED43 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F2A8E42ABD50BF002FED43 /* UserModel.swift */; };
 		72F2A8E92ABD5452002FED43 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F2A8E82ABD5452002FED43 /* AuthenticationViewModel.swift */; };
 		72F2A8EB2ABD5893002FED43 /* GroupedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F2A8EA2ABD5893002FED43 /* GroupedViews.swift */; };
-		72F2A8EE2ABD6086002FED43 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 72F2A8ED2ABD6086002FED43 /* FirebaseFirestoreSwift */; };
 		B635CB3328EFA9DA007E69B8 /* WorkoutHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B635CB3228EFA9DA007E69B8 /* WorkoutHistoryView.swift */; };
 		B6D988B928F1E03D00CD3569 /* WorkoutHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D988B828F1E03D00CD3569 /* WorkoutHistoryViewModel.swift */; };
 		B6F9132028EA4C0200D9DB2C /* WerkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9131F28EA4C0200D9DB2C /* WerkApp.swift */; };
@@ -75,7 +72,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7208662F2B8AF8C700357F56 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = System/Library/Frameworks/Charts.framework; sourceTree = SDKROOT; };
 		720866372B8DAFB300357F56 /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
 		722BCA2928FCBC1900163E04 /* Werk.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Werk.entitlements; sourceTree = "<group>"; };
 		7243762B2A64834700CE606C /* IntervalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalViewModel.swift; sourceTree = "<group>"; };
@@ -133,9 +129,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				724AED6F29F2042B004B6E3D /* FirebaseAuth in Frameworks */,
-				724AED7129F2042B004B6E3D /* FirebaseFirestore in Frameworks */,
-				72F2A8EE2ABD6086002FED43 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +261,13 @@
 			path = Timer;
 			sourceTree = "<group>";
 		};
+		72E4572E2C424B9500DA2B48 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		72F2A8CE2ABD4256002FED43 /* UserAuth */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,14 +279,6 @@
 				72C7A4FA2AC3A78000174441 /* Login */,
 			);
 			path = UserAuth;
-			sourceTree = "<group>";
-		};
-		72F2A8EC2ABD6085002FED43 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				7208662F2B8AF8C700357F56 /* Charts.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B635CB2928ED1329007E69B8 /* WorkoutList */ = {
@@ -306,7 +298,7 @@
 				B6F9132F28EA4C0800D9DB2C /* WerkTests */,
 				B6F9133928EA4C0800D9DB2C /* WerkUITests */,
 				B6F9131D28EA4C0200D9DB2C /* Products */,
-				72F2A8EC2ABD6085002FED43 /* Frameworks */,
+				72E4572E2C424B9500DA2B48 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -383,9 +375,6 @@
 			);
 			name = Werk;
 			packageProductDependencies = (
-				724AED6E29F2042B004B6E3D /* FirebaseAuth */,
-				724AED7029F2042B004B6E3D /* FirebaseFirestore */,
-				72F2A8ED2ABD6086002FED43 /* FirebaseFirestoreSwift */,
 			);
 			productName = Werk;
 			productReference = B6F9131C28EA4C0200D9DB2C /* Werk.app */;
@@ -458,7 +447,6 @@
 			);
 			mainGroup = B6F9131328EA4C0200D9DB2C;
 			packageReferences = (
-				724AED6D29F2042B004B6E3D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = B6F9131D28EA4C0200D9DB2C /* Products */;
 			projectDirPath = "";
@@ -706,8 +694,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Werk/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Werkoutz;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Werk needs access to your health data to customize your workout and track your fitness progress.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Werk needs to access and update your health data to customize your workout and track your fitness progress.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -745,8 +731,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Werk/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Werkoutz;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Werk needs access to your health data to customize your workout and track your fitness progress.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Werk needs to access and update your health data to customize your workout and track your fitness progress.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -878,35 +862,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		724AED6D29F2042B004B6E3D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = exactVersion;
-				version = 10.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		724AED6E29F2042B004B6E3D /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 724AED6D29F2042B004B6E3D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		724AED7029F2042B004B6E3D /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 724AED6D29F2042B004B6E3D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
-		};
-		72F2A8ED2ABD6086002FED43 /* FirebaseFirestoreSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 724AED6D29F2042B004B6E3D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestoreSwift;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B6F9131428EA4C0200D9DB2C /* Project object */;
 }

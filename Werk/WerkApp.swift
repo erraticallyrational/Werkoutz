@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Firebase
+
 
 @main
 struct WerkApp: App {

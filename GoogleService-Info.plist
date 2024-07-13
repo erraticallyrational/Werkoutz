@@ -30,7 +30,5 @@
 	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:178163315604:ios:52f1ced7afed78e4f91581</string>
-	<key>NSHealthShareUsageDescription</key>
-<string>Werk needs access to your health data to customize your workout and track your fitness progress.</string>
 </dict>
 </plist>

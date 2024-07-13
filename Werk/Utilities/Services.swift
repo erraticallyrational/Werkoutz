@@ -8,15 +8,15 @@
 import Foundation
 import SwiftUI
 import Combine
-import Firebase
+
 
 protocol DataStorageServiceIdentity {
     func saveWorkoutBlueprint(workoutBlueprint: WorkoutBlueprint)
-    func saveWorkoutBlueprintRemote(workoutBlueprint: WorkoutBlueprint)
+//    func saveWorkoutBlueprintRemote(workoutBlueprint: WorkoutBlueprint)
     func getWorkoutBlueprints() -> [WorkoutBlueprint]
 //    func getWorkoutBlueprintsRemote()
     func saveRecordedWorkout(recordedWorkout: RecordedWorkout)
-    func saveRecordedWorkoutRemote(recordedWorkout: RecordedWorkout)
+//    func saveRecordedWorkoutRemote(recordedWorkout: RecordedWorkout)
     func getRecordedWorkouts() -> [RecordedWorkout]
 //    func getRecordedWorkoutsRemote()
     func observeWorkoutBlueprints() -> AnyPublisher<[WorkoutBlueprint], Never>
@@ -67,21 +67,21 @@ class DataStorageService: DataStorageServiceIdentity {
     
 
     
-    func saveWorkoutBlueprintRemote(workoutBlueprint: WorkoutBlueprint) {
-        var copy = workoutBlueprint
-        if copy.id.isEmpty { copy.id = UUID().uuidString }
-        let document = Firestore.firestore().collection(DataKey.workoutBlueprint.rawValue).document(copy.id)
-        //whenever I want to create an instance of a data base use fireStore.Firetore().collection
-       
-        document.setData(DataStorageService.convertBlueprintToDictionary(blueprint: copy)) { [weak self] error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                print("Did save workout")
-                self?.saveWorkoutBlueprint(workoutBlueprint: copy)
-            }
-        }
-    }
+//    func saveWorkoutBlueprintRemote(workoutBlueprint: WorkoutBlueprint) {
+//        var copy = workoutBlueprint
+//        if copy.id.isEmpty { copy.id = UUID().uuidString }
+//        let document = Firestore.firestore().collection(DataKey.workoutBlueprint.rawValue).document(copy.id)
+//        //whenever I want to create an instance of a data base use fireStore.Firetore().collection
+//       
+//        document.setData(DataStorageService.convertBlueprintToDictionary(blueprint: copy)) { [weak self] error in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                print("Did save workout")
+//                self?.saveWorkoutBlueprint(workoutBlueprint: copy)
+//            }
+//        }
+//    }
     
 
     func getWorkoutBlueprints() -> [WorkoutBlueprint] { //RETREIVES WORKOUT BLUEPRINT
@@ -155,25 +155,25 @@ class DataStorageService: DataStorageServiceIdentity {
         }
     }
     
-    func saveRecordedWorkoutRemote(recordedWorkout: RecordedWorkout) { //FIREBASE
-        var copy = recordedWorkout
-        let dataStore = Firestore.firestore().collection(DataKey.recordedWorkouts.rawValue)
-        
-        let document = dataStore.document()
-        copy.id = document.documentID
-        document.setData(DataStorageService.convertRecordedWorkoutToDictionary(recordedWorkout: copy)) { [weak self] error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                print("Did save recorded workout")
-                print("should save/update locally")
-                print("TODAYS DATE: \(copy.date)")
-                print("WORKOUT NAME: \(copy.name)")
-                print("TOTAL DURATION: \(copy.duration)")
-                self?.saveRecordedWorkout(recordedWorkout: copy)
-            }
-        }
-    }
+//    func saveRecordedWorkoutRemote(recordedWorkout: RecordedWorkout) { //FIREBASE
+//        var copy = recordedWorkout
+//        let dataStore = Firestore.firestore().collection(DataKey.recordedWorkouts.rawValue)
+//        
+//        let document = dataStore.document()
+//        copy.id = document.documentID
+//        document.setData(DataStorageService.convertRecordedWorkoutToDictionary(recordedWorkout: copy)) { [weak self] error in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                print("Did save recorded workout")
+//                print("should save/update locally")
+//                print("TODAYS DATE: \(copy.date)")
+//                print("WORKOUT NAME: \(copy.name)")
+//                print("TOTAL DURATION: \(copy.duration)")
+//                self?.saveRecordedWorkout(recordedWorkout: copy)
+//            }
+//        }
+//    }
     
     func getRecordedWorkouts() -> [RecordedWorkout] { //LOCAL STORAGE
         UserDefaults.standard.recordedWorkouts.map {
@@ -242,7 +242,6 @@ class DataStorageService: DataStorageServiceIdentity {
     
     
     func deleteWorkoutBlueprint(at workoutBlueprint: WorkoutBlueprint) {
-        deleteWorkoutBlueprintRemote(at: workoutBlueprint)
         let oldList = UserDefaults.standard.workoutBlueprints.map {
             try! JSONDecoder().decode(WorkoutBlueprint.self, from: $0)
         }
@@ -261,16 +260,16 @@ class DataStorageService: DataStorageServiceIdentity {
         UserDefaults.standard.workoutBlueprints = newWorkoutBlueprintData
     }
   
-    func deleteWorkoutBlueprintRemote(at workoutBlueprint: WorkoutBlueprint) {
-      Firestore.firestore().collection("workoutBlueprint").document(workoutBlueprint.id).delete() { error in
-            //when deleted the document by name given by firebase the document is removed.  when deleting it by ID the workout is not deleted
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                print("Workout successfully removed")
-            }
-        }
-    }
+//    func deleteWorkoutBlueprintRemote(at workoutBlueprint: WorkoutBlueprint) {
+//      Firestore.firestore().collection("workoutBlueprint").document(workoutBlueprint.id).delete() { error in
+//            //when deleted the document by name given by firebase the document is removed.  when deleting it by ID the workout is not deleted
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                print("Workout successfully removed")
+//            }
+//        }
+//    }
     
 
     func getWorkoutBlueprintAsData() -> [Data] {
@@ -350,104 +349,104 @@ extension UserDefaults {
         }
     }
 }
-extension DataStorageService {
-    static func convertBlueprintToDictionary(blueprint:WorkoutBlueprint)-> [String: Any] { //converts workoutBlueprint into dictionary to save data to firebase
-        [
-            "userId": blueprint.userId,
-            "id": blueprint.id,
-            "name": blueprint.name,
-            "warmup" : convertPhasesToDictionary(phase: blueprint.warmup),
-            "intervals" : convertIntervalCollectionToDictionary(interval:blueprint.intervals),
-            "cooldown" : convertPhasesToDictionary(phase: blueprint.cooldown)
-        ]
-        //my blueprint converted to a dictionary
-    }
-    
-    static func convertIntervalCollectionToDictionary(interval: IntervalCollection)-> [String: Any] {
-        [
-            "_cycles": interval._cycles.map { convertIntervalToDictionary(interval: $0) },
-            "restBetweenPhases": convertPhasesToDictionary(phase: interval.restBetweenPhases)
-        ]
-    }
-    
-    static func convertDictionaryToIntervaCollectionl(dictionary: [String:Any])-> IntervalCollection {
-        guard let cyclesDict = dictionary["_cycles"] as? [[String: Any]],
-              let _cycles = cyclesDict.map { convertDictionaryToInterval(dictionary: $0) } as? [Interval],
-        let restDict = dictionary["restBetweenPhases"] as? [String: Any],
-        let restBetweenPhases = convertDictionaryToWorkPhase(dictionary: restDict) as? WorkoutPhase   else{    // Interval not being coming from these 3 functions <v^
-            return IntervalCollection(_cycles: [], restBetweenPhases: .restBetweenPhases)
-        }
-        return IntervalCollection(_cycles: _cycles, restBetweenPhases: restBetweenPhases)
-    }
-    
-    static func convertIntervalToDictionary(interval: Interval) -> [String : Any] {
-        [ "id": interval.id,
-          "highIntensity": convertPhasesToDictionary(phase: interval.highIntensity),
-          "lowIntensity": convertPhasesToDictionary(phase: interval.lowIntensity),      
-          "restPhase": interval.restPhase == nil ? nil : convertPhasesToDictionary(phase: interval.restPhase!),
-          "numberOfSets": interval.numberOfSets,
-          "order": interval.order.rawValue
-        ]
-    }
-    
-    static func convertDictionaryToInterval(dictionary: [String:Any]) -> Interval {
-           guard let id = dictionary["id"] as? String,
-                 let highIntensityDict = dictionary["highIntensity"] as? [String: Any],
-                 let lowIntensityDict = dictionary["lowIntensity"] as? [String: Any],
-                 let highIntensity = convertDictionaryToWorkPhase(dictionary: highIntensityDict) as? WorkoutPhase,
-                 let lowIntensity = convertDictionaryToWorkPhase(dictionary: lowIntensityDict) as? WorkoutPhase,
-                 let numberOfSets = dictionary["numberOfSets"] as? Int,
-                 let order = dictionary["order"] as? String else {
-               return Interval(highIntensity: .highIntensity, lowIntensity: .lowIntensity, numberOfSets: 0, order: .startsWithLowIntensity)
-           }
-           if let restPhaseDict = dictionary["restPhase"] as? [String: Any], let restBetweenPhases = convertDictionaryToWorkPhase(dictionary: restPhaseDict) as? WorkoutPhase {
-               return Interval(id: id, highIntensity: highIntensity, lowIntensity: lowIntensity, restPhase: restBetweenPhases, numberOfSets: numberOfSets, order: Interval.Order(rawValue: order) ?? .startsWithLowIntensity)
-           } else {
-               return Interval(id: id, highIntensity: highIntensity, lowIntensity: lowIntensity, restPhase: nil, numberOfSets: numberOfSets, order: Interval.Order(rawValue: order) ?? .startsWithLowIntensity)
-           }
-       }
- 
-    
-    
-    static func convertPhasesToDictionary(phase: WorkoutPhase) -> [String: Any] {
-        [
-            "id": phase.id,
-            "name": phase.name,
-            "hours": phase.hours,
-            "minutes": phase.minutes,
-            "seconds": phase.seconds
-        ]
-    }
-    
-    static func convertDictionaryToWorkPhase(dictionary: [String:Any]) -> WorkoutPhase {
-        guard let id = dictionary["id"] as? String,
-              let name = dictionary["name"] as? String,
-              let hours = dictionary["hours"] as? Int,
-              let minutes = dictionary["minutes"] as? Int,
-              let seconds = dictionary["seconds"] as? Int else {
-            return WorkoutPhase(id: "", name: "")
-        }
-        return WorkoutPhase(id: id, name: name, hours: hours, minutes: minutes, seconds: seconds)
-    }
-    
-    
-    static func convertRecordedWorkoutToDictionary(recordedWorkout: RecordedWorkout)-> [String: Any] { //converts recordedWorkout into dictionary to save data to firebase
-        [
-            "workoutId": recordedWorkout.id,
-            "name": recordedWorkout.name,
-            "duration": recordedWorkout.duration,
-            "date" : recordedWorkout.date,
-        ]
-    }
-    
-    static func convertDictionaryToRecordedWorkout(dictionary: [String: Any]) -> RecordedWorkout {
-        guard let userId = dictionary["userId"] as? String,
-              let id = dictionary["workoutId"] as? String,
-              let name = dictionary["name"] as? String,
-              let duration = dictionary["duration"] as? Int,
-              let timestamp = dictionary["date"] as? Timestamp else {
-            return RecordedWorkout(id:"" ,name: "", duration: 0, date: Date())
-        }
-        return RecordedWorkout(id: id, name: name, duration: Double(duration), date: Date(timeIntervalSince1970: Double(timestamp.seconds) ) )
-    }
-}
+//extension DataStorageService {
+//    static func convertBlueprintToDictionary(blueprint:WorkoutBlueprint)-> [String: Any] { //converts workoutBlueprint into dictionary to save data to firebase
+//        [
+//            "userId": blueprint.userId,
+//            "id": blueprint.id,
+//            "name": blueprint.name,
+//            "warmup" : convertPhasesToDictionary(phase: blueprint.warmup),
+//            "intervals" : convertIntervalCollectionToDictionary(interval:blueprint.intervals),
+//            "cooldown" : convertPhasesToDictionary(phase: blueprint.cooldown)
+//        ]
+//        //my blueprint converted to a dictionary
+//    }
+//    
+//    static func convertIntervalCollectionToDictionary(interval: IntervalCollection)-> [String: Any] {
+//        [
+//            "_cycles": interval._cycles.map { convertIntervalToDictionary(interval: $0) },
+//            "restBetweenPhases": convertPhasesToDictionary(phase: interval.restBetweenPhases)
+//        ]
+//    }
+//    
+//    static func convertDictionaryToIntervaCollectionl(dictionary: [String:Any])-> IntervalCollection {
+//        guard let cyclesDict = dictionary["_cycles"] as? [[String: Any]],
+//              let _cycles = cyclesDict.map { convertDictionaryToInterval(dictionary: $0) } as? [Interval],
+//        let restDict = dictionary["restBetweenPhases"] as? [String: Any],
+//        let restBetweenPhases = convertDictionaryToWorkPhase(dictionary: restDict) as? WorkoutPhase   else{    // Interval not being coming from these 3 functions <v^
+//            return IntervalCollection(_cycles: [], restBetweenPhases: .restBetweenPhases)
+//        }
+//        return IntervalCollection(_cycles: _cycles, restBetweenPhases: restBetweenPhases)
+//    }
+//    
+//    static func convertIntervalToDictionary(interval: Interval) -> [String : Any] {
+//        [ "id": interval.id,
+//          "highIntensity": convertPhasesToDictionary(phase: interval.highIntensity),
+//          "lowIntensity": convertPhasesToDictionary(phase: interval.lowIntensity),      
+//          "restPhase": interval.restPhase == nil ? nil : convertPhasesToDictionary(phase: interval.restPhase!),
+//          "numberOfSets": interval.numberOfSets,
+//          "order": interval.order.rawValue
+//        ]
+//    }
+//    
+//    static func convertDictionaryToInterval(dictionary: [String:Any]) -> Interval {
+//           guard let id = dictionary["id"] as? String,
+//                 let highIntensityDict = dictionary["highIntensity"] as? [String: Any],
+//                 let lowIntensityDict = dictionary["lowIntensity"] as? [String: Any],
+//                 let highIntensity = convertDictionaryToWorkPhase(dictionary: highIntensityDict) as? WorkoutPhase,
+//                 let lowIntensity = convertDictionaryToWorkPhase(dictionary: lowIntensityDict) as? WorkoutPhase,
+//                 let numberOfSets = dictionary["numberOfSets"] as? Int,
+//                 let order = dictionary["order"] as? String else {
+//               return Interval(highIntensity: .highIntensity, lowIntensity: .lowIntensity, numberOfSets: 0, order: .startsWithLowIntensity)
+//           }
+//           if let restPhaseDict = dictionary["restPhase"] as? [String: Any], let restBetweenPhases = convertDictionaryToWorkPhase(dictionary: restPhaseDict) as? WorkoutPhase {
+//               return Interval(id: id, highIntensity: highIntensity, lowIntensity: lowIntensity, restPhase: restBetweenPhases, numberOfSets: numberOfSets, order: Interval.Order(rawValue: order) ?? .startsWithLowIntensity)
+//           } else {
+//               return Interval(id: id, highIntensity: highIntensity, lowIntensity: lowIntensity, restPhase: nil, numberOfSets: numberOfSets, order: Interval.Order(rawValue: order) ?? .startsWithLowIntensity)
+//           }
+//       }
+// 
+//    
+//    
+//    static func convertPhasesToDictionary(phase: WorkoutPhase) -> [String: Any] {
+//        [
+//            "id": phase.id,
+//            "name": phase.name,
+//            "hours": phase.hours,
+//            "minutes": phase.minutes,
+//            "seconds": phase.seconds
+//        ]
+//    }
+//    
+//    static func convertDictionaryToWorkPhase(dictionary: [String:Any]) -> WorkoutPhase {
+//        guard let id = dictionary["id"] as? String,
+//              let name = dictionary["name"] as? String,
+//              let hours = dictionary["hours"] as? Int,
+//              let minutes = dictionary["minutes"] as? Int,
+//              let seconds = dictionary["seconds"] as? Int else {
+//            return WorkoutPhase(id: "", name: "")
+//        }
+//        return WorkoutPhase(id: id, name: name, hours: hours, minutes: minutes, seconds: seconds)
+//    }
+//    
+//    
+//    static func convertRecordedWorkoutToDictionary(recordedWorkout: RecordedWorkout)-> [String: Any] { //converts recordedWorkout into dictionary to save data to firebase
+//        [
+//            "workoutId": recordedWorkout.id,
+//            "name": recordedWorkout.name,
+//            "duration": recordedWorkout.duration,
+//            "date" : recordedWorkout.date,
+//        ]
+//    }
+//    
+////    static func convertDictionaryToRecordedWorkout(dictionary: [String: Any]) -> RecordedWorkout {
+////        guard let userId = dictionary["userId"] as? String,
+////              let id = dictionary["workoutId"] as? String,
+////              let name = dictionary["name"] as? String,
+////              let duration = dictionary["duration"] as? Int,
+////              let timestamp = dictionary["date"] as? Timestamp else {
+////            return RecordedWorkout(id:"" ,name: "", duration: 0, date: Date())
+////        }
+////        return RecordedWorkout(id: id, name: name, duration: Double(duration), date: Date(timeIntervalSince1970: Double(timestamp.seconds) ) )
+////    }
+//}

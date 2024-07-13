@@ -7,7 +7,6 @@
 
 import SwiftUI
 import DataDetection
-import Charts
 
 struct WorkoutHistoryView: View {
     @ObservedObject var viewModel = WorkoutHistoryViewModel()

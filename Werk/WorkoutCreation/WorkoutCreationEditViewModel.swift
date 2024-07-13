@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import Combine
-import Firebase
+
 
 class WorkoutCreationEditViewModel:Identifiable, ObservableObject {
     
